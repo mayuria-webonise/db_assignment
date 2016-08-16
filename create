@@ -1,0 +1,67 @@
+CREATE TABLE IF NOT EXISTS `e_commerce`.`users` (
+  `idusers` INT NOT NULL,
+  `name` VARCHAR(45) NULL,
+  `email` VARCHAR(45) NULL,
+  `password` VARCHAR(45) NULL,
+  PRIMARY KEY (`idusers`))
+ENGINE = InnoDB
+
+CREATE TABLE IF NOT EXISTS `e_commerce`.`product_color` (
+  `id` INT NOT NULL,
+  `color` TEXT NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+
+CREATE TABLE IF NOT EXISTS `e_commerce`.`payment_modes` (
+  `id` INT NOT NULL,
+  `payment_mode` VARCHAR(45) NOT NULL,
+  `discount_amount` DOUBLE NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+
+CREATE TABLE IF NOT EXISTS `e_commerce`.`products` (
+  `id` INT NOT NULL,
+  `product_name` VARCHAR(45) NOT NULL,
+  `color_id` INT NULL,
+  `price` DOUBLE NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_products_1_idx` (`color_id` ASC),
+  CONSTRAINT `fk_products_1`
+    FOREIGN KEY (`color_id`)
+    REFERENCES `e_commerce`.`product_color` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+
+CREATE TABLE IF NOT EXISTS `e_commerce`.`orders` (
+  `id` INT NOT NULL,
+  `order_cost` DOUBLE NULL,
+  `order_date` VARCHAR(45) NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+
+CREATE TABLE IF NOT EXISTS `e_commerce`.`cart` (
+  `user_id` INT NOT NULL,
+  `order_id` INT NOT NULL,
+  `product_id` INT NOT NULL,
+  PRIMARY KEY (`user_id`, `order_id`),
+  INDEX `fk_cart_2_idx` (`order_id` ASC),
+  INDEX `fk_cart_3_idx` (`product_id` ASC),
+  CONSTRAINT `fk_cart_1`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `e_commerce`.`users` (`idusers`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_cart_2`
+    FOREIGN KEY (`order_id`)
+    REFERENCES `e_commerce`.`orders` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,orderspayment_modes
+  CONSTRAINT `fk_cart_3`
+    FOREIGN KEY (`product_id`)
+    REFERENCES `e_commerce`.`products` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+
+
