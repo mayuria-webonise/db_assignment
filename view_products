@@ -1,0 +1,9 @@
+create view products_sold as
+SELECT o.id,o.order_cost,o.order_date,pm.discount_amount,pm.payment_mode,p.payment_status
+FROM orders o
+INNER JOIN payment p
+ON o.id=p.order_id
+INNER JOIN payment_modes pm
+ON p.payment_mode_id=pm.id; 
+
+select * from products_sold;

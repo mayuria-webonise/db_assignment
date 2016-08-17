@@ -1,0 +1,19 @@
+
+delimiter $$
+CREATE TRIGGER update_price
+AFTER INSERT ON cart
+FOR EACH ROW
+
+BEGIN
+declare userid int;
+declare cost double ;
+declare orderid int;
+declare sum double;
+
+-- select order_id into orderid from cart where order_id = NEW.order_id;
+select order_cost into sum from orders where id = NEW.order_id;
+select price into cost from products where id = NEW.product_id;
+set sum:= sum + cost;
+update orders set order_cost = sum where id = NEW.order_id;
+END;
+$$ delimiter

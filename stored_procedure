@@ -1,0 +1,11 @@
+CREATE PROCEDURE proceed_payment(orderid int, userid int, paymentmode int)
+BEGIN
+	declare cost double;
+	declare discount double;
+	select order_cost into cost from orders where id=orderid and user_id=userid;
+	select discount_amount into discount from payment_modes where id= paymentmode;
+	set cost= cost-discount;
+	insert into payment(order_id,user_id,payment_mode_id,payment_status,payment_amount) values(orderid,userid,paymentmode,1,cost);
+   
+END$$
+ delimiter;
