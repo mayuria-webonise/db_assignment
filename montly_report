@@ -1,0 +1,9 @@
+SELECT o.id,o.order_date,pr.product_name,pr.price,o.order_cost,u.user_name,u.email
+FROM orders o
+INNER JOIN cart c
+ON o.id=c.order_id
+INNER JOIN products pr
+ON pr.id=c.product_id
+INNER JOIN users u
+ON o.user_id=u.idusers
+where o.order_date >= DATE_SUB(now(),INTERVAL 30 DAY);
